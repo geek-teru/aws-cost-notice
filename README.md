@@ -3,12 +3,26 @@
 ## 概要
 AWSコスト通知用Lambda Function
 
-## 手順
+## Lambdaテスト手順
+```
+To build you image:
+
+docker build -t aws-cost-notice .
+To run your image locally:
+
+docker run -d -p 9000:8080 aws-cost-notice
+In a separate terminal, you can then locally invoke the function using cURL:
+
+curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"payload":"hello world!"}'
+```
+
+
+## Terraform手順
 ```
 # AWS credential setting
-$ export AWS_ACCESS_KEY_ID=$your_access_key_id
-$ export AWS_SECRET_ACCESS_KEY=$your_secret_access_key
-$ export AWS_SESSION_TOKEN=$your_session_token
+$ export AWS_ACCESS_KEY_ID=<your_access_key_id>
+$ export AWS_SECRET_ACCESS_KEY=<your_secret_access_key>
+$ export AWS_SESSION_TOKEN=<your_session_token>
 
 # Terraform apply
 $ docker compose run --rm terraform init
