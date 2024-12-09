@@ -39,6 +39,9 @@ jobs:
       AWS_REGION: ap-northeast-1
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
       - name: AWS login
         uses: aws-actions/configure-aws-credentials@v2
         with:
