@@ -2,8 +2,10 @@ import datetime
 import pytz
 import boto3
 
-# 月額の利用料を取得
+from slack_sdk import WebClient
+from slack_sdk.errors import SlackApiError
 
+SLACK_CHANNEL = "aws-cost-notice"
 
 def get_monthly_cost(start_date, end_date):
     client = boto3.client('ce', region_name='us-east-1')
@@ -21,8 +23,6 @@ def get_monthly_cost(start_date, end_date):
         float(response["ResultsByTime"][0]["Total"]["BlendedCost"]["Amount"]), 2)
 
     return monthly_cost
-
-# 利用料の明細を取得
 
 
 def get_itemized_cost(start_date, end_date):
@@ -53,22 +53,24 @@ def get_itemized_cost(start_date, end_date):
     return service_cost
 
 # Slackに通知する処理
-# def post_slack(slack_config, message_text):
-#   attachments = [
-#     {
-#       "fallback":"aws cost notification",
-#       "color":"#2cb47c",
-#       "fields":[
-#           {
-#             "title":"AWSコスト通知",
-#             "value":slack_config["mention"] + "\n" + message_text
-#           }
-#       ]
-#     }
-#   ]
-
-#   client = WebClient(slack_config["token"])
-#   result = client.chat_postMessage(channel = slack_config["channel"], attachments = attachments)
+def post_slack(channel, message_text):
+  attachments = [
+    {
+      "fallback":"AWS Cost Notice",
+      "color":"#2cb47c",
+      "fields":[
+        {
+          "title": "AWS Cost Notice",
+          "value": message_text
+        }
+      ]
+    }
+  ]
+  client = WebClient(SLACK_TOKEN)
+  try:
+    result = client.chat_postMessage(channel = channel, attachments = attachments)
+  except SlackApiError as e:
+    print(f"[ERROR]post_slack failed. {e.response['error']}")
 
 
 def lambda_handler(event, context):
@@ -86,12 +88,9 @@ def lambda_handler(event, context):
     itemized_cost = get_itemized_cost(this_month_first_day_str, yesterday_str)
     itemized_cost_str = "\n".join([str(item) for item in itemized_cost])
 
-    message = f'''{yesterday_str}までの{yesterday.month}月分の利用料金は{monthly_cost}USDです。
-  サービス別の利用料金の以下の通りです。
-  {itemized_cost_str}
-  '''
+    message = f"{yesterday_str}までの{yesterday.month}月分の利用料金は{monthly_cost}USDです。\n\nサービス別の利用料金の以下の通りです。\n\n{itemized_cost_str}"
     print(message)
-    # post_slack(config["slack_config"], message)
+    post_slack(SLACK_CHANNEL, message)
 
 
 if __name__ == "__main__":

@@ -5,14 +5,16 @@ AWSコスト通知用Lambda Function
 
 ## Lambdaテスト手順
 ```
-To build you image:
-
+#To build you image:
 docker build -t aws-cost-notice .
-To run your image locally:
 
-docker run -d -p 9000:8080 aws-cost-notice
-In a separate terminal, you can then locally invoke the function using cURL:
+#To run your image locally:
+docker run -d -p 9000:8080 \
+  -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+  -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+  aws-cost-notice
 
+# In a separate terminal, you can then locally invoke the function using cURL:
 curl -XPOST "http://localhost:9000/2015-03-31/functions/function/invocations" -d '{"payload":"hello world!"}'
 ```
 
