@@ -21,13 +21,19 @@ jobs:
       run:
         working-directory: terraform/environments/${{ matrix.env }}
     
-    strategy:
-      matrix:
-        env:
-         - dev
-        include:
-          - env: dev
-            role_to_assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_CICD_ROLE_NAME }}
+    # strategy:
+    #   matrix:
+    #     env:
+    #      - dev
+    #      - stg
+    #      - prd
+    #     include:
+    #       - env: dev
+    #         role_to_assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_CICD_ROLE_NAME }}
+    #       - env: stg
+    #         role_to_assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_CICD_ROLE_NAME }}
+    #       - env: prd
+    #         role_to_assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_CICD_ROLE_NAME }}
 
     env:
       AWS_REGION: ap-northeast-1
