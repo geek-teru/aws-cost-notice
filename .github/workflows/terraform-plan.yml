@@ -19,7 +19,7 @@ jobs:
     
     defaults:
       run:
-        working-directory: terraform/environments/${{ matrix.env }}
+        working-directory: terraform/environments/dev
     
     # strategy:
     #   matrix:
