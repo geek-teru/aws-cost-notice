@@ -22,8 +22,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      #AWS_ACCOUNT_ID: 533267370634
-      #AWS_IAM_ROLE: github-actions-oidc-role
       AWS_REGION: ap-northeast-1
       CONTAINER_NAME: cost-notice
       DOCKER_CTX: ./terraform/modules/lambda/image
