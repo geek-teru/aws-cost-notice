@@ -14,6 +14,10 @@ variable "aws_region" {
   type = string
 }
 
-variable "slack_token" {
+variable "slack_aws_bot_token" {
+  type = string
+}
+
+variable "iam_role_arn" {
   type = string
 }
