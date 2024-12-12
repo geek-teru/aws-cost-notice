@@ -5,7 +5,7 @@ resource "aws_lambda_function" "lambda_function" {
   role          = var.iam_role_arn
 
   package_type = "Image"
-  image_uri    = "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.env}-${var.sys_name}-cost-notice:latest"
+  image_uri    = "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.env}/${var.sys_name}-cost-notice:latest"
 
   environment {
     variables = {
