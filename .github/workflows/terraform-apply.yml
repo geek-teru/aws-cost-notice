@@ -1,5 +1,5 @@
 name: terraform-apply
-run-name: terraform-plan - ${{ inputs.environment }}
+run-name: terraform-apply - ${{ inputs.environment }}
 
 on:
   workflow_dispatch:
@@ -22,11 +22,11 @@ jobs:
     # only main branch
     if: ${{ github.ref == 'refs/heads/main' }}
     
-    runs-on: ubuntu-latest    
+    runs-on: ubuntu-latest
     
     defaults:
       run:
-        working-directory: terraform/environments/${{ matrix.env }}
+        working-directory: terraform/environments/${{ inputs.environment }}
     
     env:
       AWS_REGION: ap-northeast-1
