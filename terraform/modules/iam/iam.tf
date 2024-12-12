@@ -1,13 +1,13 @@
 
 # iam_policy
-resource "aws_iam_policy" "iam_policy" {
-  name = "${var.env}-${var.sys_name}-lambda-cost-notice-role"
-  policy = file("${path.module}/lambda-cost-notice-role.json")
+resource "aws_iam_policy" "lambda_cost_notice" {
+  name   = "${var.env}-${var.sys_name}-lambda-cost-notice"
+  policy = file("${path.module}/policies/lambda-cost-notice.json")
 }
 
 # iam role
-resource "aws_iam_role" "iam_role" {
-  name = var.iam_role_config.name
+resource "aws_iam_role" "lambda_cost_notice" {
+  name = "${var.env}-${var.sys_name}-lambda-cost-notice"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -25,6 +25,10 @@ resource "aws_iam_role" "iam_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "iam_attach" {
-  role       = aws_iam_role.iam_role.name
-  policy_arn = aws_iam_policy.iam_policy.arn
+  role       = aws_iam_role.lambda_cost_notice.name
+  policy_arn = aws_iam_policy.lambda_cost_notice.arn
+}
+
+output "iam_role_lambda_cost_notice" {
+  value = aws_iam_role.lambda_cost_notice
 }
