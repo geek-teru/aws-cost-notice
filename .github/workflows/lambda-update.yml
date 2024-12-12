@@ -1,0 +1,62 @@
+name: lambda-update
+run-name: lambda-update - ${{ inputs.environment }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: 'target environment'
+        required: true
+        options:
+          - dev
+          - stg
+          - prd
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  lambda-update:
+    runs-on: ubuntu-latest
+
+    env:
+      #AWS_ACCOUNT_ID: 533267370634
+      #AWS_IAM_ROLE: github-actions-oidc-role
+      AWS_REGION: ap-northeast-1
+      CONTAINER_NAME: cost-notice
+      DOCKER_CTX: ./terraform/modules/lambda/image
+      DOCKERFILE: ./terraform/modules/lambda/image/Dockerfile
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set Environment Variables
+        run: |
+          ECR_REPOSITORY_NAME=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ github.event.inputs.environment }}-${{ env.CONTAINER_NAME }} 
+          echo "ECR_REPOSITORY_NAME=$ECR_REPOSITORY_NAME" >> $GITHUB_ENV
+          LAMBDA_FUNCTION_NAME=${{ github.event.inputs.environment }}-${{ env.CONTAINER_NAME }}
+          echo "LAMBDA_FUNCTION_NAME=$LAMBDA_FUNCTION_NAME" >> $GITHUB_ENV
+
+      - name: AWS login
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_CICD_ROLE_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: ECR login
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Set Image Tag
+        run: |
+          image_tag='latest'
+          echo "IMAGE_TAG=${image_tag}" >> $GITHUB_ENV
+
+      - name: Build
+        uses: ./.github/actions/image-build
+
+      # - name: Lambda Update
+      #   uses: ./.github/actions/lambda-update

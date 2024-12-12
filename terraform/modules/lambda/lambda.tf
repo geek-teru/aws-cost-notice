@@ -6,10 +6,16 @@ resource "aws_lambda_function" "lambda_function" {
   package_type  = "Image"
 
   #TODO: change later 
-  #image_uri = "123456789012.dkr.ecr.us-east-1.amazonaws.com/my-lambda-image:latest"
+  #image_uri = "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.env}-${var.sys_name}-cost-notice:latest"
+
+  environment {
+    variables = {
+      SLACK_TOKEN = var.slack_token
+    }
+  }
 
   logging_config {
     log_format = "Text"
-    log_group = "/aws/lambda/${var.lambda_vars.function_name}"
+    log_group  = "/aws/lambda/${var.env}-${var.sys_name}-cost-notice"
   }
 }

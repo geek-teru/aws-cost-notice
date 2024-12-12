@@ -9,6 +9,7 @@ on:
         description: 'target environment'
         required: true
         options:
+          - dev
           - stg
           - prd
 

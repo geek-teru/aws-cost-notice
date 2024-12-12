@@ -6,6 +6,14 @@ variable "sys_name" {
   type = string
 }
 
-variable "account_id" {
+variable "aws_account_id" {
+  type = string
+}
+
+variable "aws_region" {
+  type = string
+}
+
+variable "slack_token" {
   type = string
 }

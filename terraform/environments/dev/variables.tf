@@ -8,6 +8,15 @@ variable "sys_name" {
 
 data "aws_caller_identity" "current" {}
 
-output "aws_account_id" {
-  value = data.aws_caller_identity.current.account_id
+variable "aws_region" {
+  type    = string
+  default = "ap-northeast-1"
+}
+
+# --------------------------------
+# environment variable
+# --------------------------------
+variable "SLACK_TOKEN" {
+  type    = string
+  default = ""
 }
