@@ -37,6 +37,7 @@ jobs:
 
     env:
       AWS_REGION: ap-northeast-1
+      TF_VAR_SLACK_AWS_BOT_TOKEN: ${{ secrets.SLACK_AWS_BOT_TOKEN }}
 
     steps:
       - name: Checkout
