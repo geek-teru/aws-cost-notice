@@ -1,3 +1,4 @@
+import os
 import datetime
 import pytz
 import boto3
@@ -5,6 +6,7 @@ import boto3
 from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError
 
+SLACK_TOKEN = os.getenv("SLACK_AWS_BOT_TOKEN")
 SLACK_CHANNEL = "aws-cost-notice"
 
 def get_monthly_cost(start_date, end_date):

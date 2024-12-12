@@ -1,9 +1,11 @@
 variable "env" {
-  type = string
+  type    = string
+  default = "dev"
 }
 
 variable "sys_name" {
-  type = string
+  type    = string
+  default = "cmn"
 }
 
 data "aws_caller_identity" "current" {}
@@ -16,7 +18,7 @@ variable "aws_region" {
 # --------------------------------
 # environment variable
 # --------------------------------
-variable "SLACK_TOKEN" {
+variable "SLACK_AWS_BOT_TOKEN" {
   type    = string
   default = ""
 }
