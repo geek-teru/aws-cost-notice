@@ -22,6 +22,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+      SYS_NAME: cmn
       AWS_REGION: ap-northeast-1
       CONTAINER_NAME: cost-notice
       DOCKER_CTX: ./terraform/modules/lambda/image
@@ -33,7 +34,7 @@ jobs:
 
       - name: Set Environment Variables
         run: |
-          ECR_REPOSITORY_NAME=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ github.event.inputs.environment }}/${{ env.CONTAINER_NAME }} 
+          ECR_REPOSITORY_NAME=${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ github.event.inputs.environment }}/${{ env.SYS_NAME }}-${{ env.CONTAINER_NAME }} 
           echo "ECR_REPOSITORY_NAME=$ECR_REPOSITORY_NAME" >> $GITHUB_ENV
           LAMBDA_FUNCTION_NAME=${{ github.event.inputs.environment }}-${{ env.CONTAINER_NAME }}
           echo "LAMBDA_FUNCTION_NAME=$LAMBDA_FUNCTION_NAME" >> $GITHUB_ENV
