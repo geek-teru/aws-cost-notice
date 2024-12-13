@@ -17,3 +17,11 @@ resource "aws_lambda_function" "lambda_function" {
     log_group  = "/aws/lambda/${var.env}-${var.sys_name}-cost-notice"
   }
 }
+
+resource "aws_lambda_permission" "lambda_permission" {
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.lambda_function.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.event_rule.arn
+  depends_on    = [aws_lambda_function.lambda_function, aws_cloudwatch_event_rule.event_rule]
+}
