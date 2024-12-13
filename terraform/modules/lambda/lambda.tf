@@ -1,6 +1,5 @@
 resource "aws_lambda_function" "lambda_function" {
   function_name = "${var.env}-${var.sys_name}-cost-notice"
-  handler       = "cost_notice.lambda_handler"
   timeout       = 60
   role          = var.iam_role_arn
 
