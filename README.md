@@ -1,7 +1,13 @@
 # aws-cost-notice
 
 ## 概要
-AWSコスト通知用Lambda Function
+* AWSコスト通知用Lambda Function
+* Lambdaはコンテナで実行する。
+
+
+## 事前準備
+* Slack APPを作成し,通知先チャンネルに追加しておく
+* ECRリポジトリを作成しておく
 
 ## Lambdaテスト手順
 ```
